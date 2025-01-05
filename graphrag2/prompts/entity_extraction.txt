@@ -1,0 +1,161 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity, first identify all entities needed from the text in order to capture the information and ideas in the text.
+Next, report all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: Suggest several labels or categories for the entity. The categories should not be specific, but should be as general as possible.
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: a numeric score indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in The primary language of the provided text is English. as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
+
+4. If you have to translate into The primary language of the provided text is English., just translate the descriptions, nothing else!
+
+5. When finished, output {completion_delimiter}.
+
+-Examples-
+######################
+
+Example 1:
+
+text:
+ crisp leaves of holly, mistletoe,
+and ivy reflected back the light, as if so many little mirrors had been
+scattered there; and such a mighty blaze went roaring up the chimney as
+that dull petrification of a hearth had never known in Scrooge's time,
+or Marley's, or for many and many a winter season gone. Heaped up on the
+floor, to form a kind of throne, were turkeys, geese, game, poultry,
+brawn, great joints of meat, sucking-pigs, long wreaths of sausages,
+mince-pies, plum-puddings, barrels of oysters, red-hot chestnuts,
+cherry-cheeked apples, juicy oranges, luscious pears, immense
+twelfth-cakes, and seething bowls of punch, that made the chamber dim
+with their delicious steam. In easy state upon this couch there sat a
+jolly Giant, glorious
+------------------------
+output:
+("entity"{tuple_delimiter}HOLLY{tuple_delimiter}PLANT{tuple_delimiter}Holly is mentioned as part of the festive decoration reflecting light}
+{record_delimiter}
+("entity"{tuple_delimiter}MISTLETOE{tuple_delimiter}PLANT{tuple_delimiter}Mistletoe is mentioned as part of the festive decoration reflecting light}
+{record_delimiter}
+("entity"{tuple_delimiter}IVY{tuple_delimiter}PLANT{tuple_delimiter}Ivy is mentioned as part of the festive decoration reflecting light}
+{record_delimiter}
+("entity"{tuple_delimiter}SCROOGE{tuple_delimiter}CHARACTER{tuple_delimiter}Scrooge is referenced in relation to the past condition of the hearth}
+{record_delimiter}
+("entity"{tuple_delimiter}MARLEY{tuple_delimiter}CHARACTER{tuple_delimiter}Marley is referenced in relation to the past condition of the hearth}
+{record_delimiter}
+("entity"{tuple_delimiter}TURKEYS{tuple_delimiter}FOOD{tuple_delimiter}Turkeys are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}GEORGE{tuple_delimiter}FOOD{tuple_delimiter}Geese are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}GAME{tuple_delimiter}FOOD{tuple_delimiter}Game is mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}POULTRY{tuple_delimiter}FOOD{tuple_delimiter}Poultry is mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}BRAWN{tuple_delimiter}FOOD{tuple_delimiter}Brawn is mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}MEAT{tuple_delimiter}FOOD{tuple_delimiter}Great joints of meat are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}SUCKING-PIGS{tuple_delimiter}FOOD{tuple_delimiter}Sucking-pigs are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}SAUSAGES{tuple_delimiter}FOOD{tuple_delimiter}Long wreaths of sausages are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}MINCE-PIES{tuple_delimiter}FOOD{tuple_delimiter}Mince-pies are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}PLUM-PUDDINGS{tuple_delimiter}FOOD{tuple_delimiter}Plum-puddings are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}OYSTERS{tuple_delimiter}FOOD{tuple_delimiter}Barrels of oysters are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}CHESTNUTS{tuple_delimiter}FOOD{tuple_delimiter}Red-hot chestnuts are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}APPLES{tuple_delimiter}FOOD{tuple_delimiter}Cherry-cheeked apples are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}ORANGES{tuple_delimiter}FOOD{tuple_delimiter}Juicy oranges are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}PEARS{tuple_delimiter}FOOD{tuple_delimiter}Luscious pears are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}TWELFTH-CAKES{tuple_delimiter}FOOD{tuple_delimiter}Immense twelfth-cakes are mentioned as part of the feast}
+{record_delimiter}
+("entity"{tuple_delimiter}PUNCH{tuple_delimiter}BEVERAGE{tuple_delimiter}Seething bowls of punch are mentioned as part of the feast, making the chamber dim with delicious steam}
+{record_delimiter}
+("entity"{tuple_delimiter}JOLLY GIANT{tuple_delimiter}CHARACTER{tuple_delimiter}A jolly Giant is described as sitting in easy state upon the feast}
+{record_delimiter}
+("relationship"{tuple_delimiter}HOLLY{tuple_delimiter}MISTLETOE{tuple_delimiter}Holly and mistletoe are both mentioned as part of the festive decoration{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}HOLLY{tuple_delimiter}IVY{tuple_delimiter}Holly and ivy are both mentioned as part of the festive decoration{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}MISTLETOE{tuple_delimiter}IVY{tuple_delimiter}Mistletoe and ivy are both mentioned as part of the festive decoration{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}SCROOGE{tuple_delimiter}MARLEY{tuple_delimiter}Scrooge and Marley are both referenced in relation to the past condition of the hearth{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}TURKEYS{tuple_delimiter}JOLLY GIANT{tuple_delimiter}Turkeys are part of the feast over which the Jolly Giant presides{tuple_delimiter}3)
+{record_delimiter}
+("relationship"{tuple_delimiter}PUNCH{tuple_delimiter}JOLLY GIANT{tuple_delimiter}Punch is part of the feast over which the Jolly Giant presides{tuple_delimiter}3)
+{completion_delimiter}
+#############################
+
+
+Example 2:
+
+text:
+ you
+had many brothers, Spirit?'
+
+'More than eighteen hundred,' said the Ghost.
+
+'A tremendous family to provide for,' muttered Scrooge.
+
+The Ghost of Christmas Present rose.
+
+'Spirit,' said Scrooge submissively, 'conduct me where you will. I went
+forth last night on compulsion, and I learned a lesson which is working
+now. To-night if you have aught to teach me, let me profit by it.'
+
+'Touch my robe!'
+
+Scrooge did as he was told, and held it fast.
+
+Holly, mistletoe, red berries, ivy, turkeys, geese, game, poultry,
+brawn, meat, pigs, sausages, oysters, pies, puddings, fruit, and punch,
+all vanished instantly. So did the room, the fire, the ruddy glow, the
+hour of night, and they stood in the city streets on Christmas morning,
+where (for the weather
+------------------------
+output:
+("entity"{tuple_delimiter}SPIRIT{tuple_delimiter}CHARACTER{tuple_delimiter}A ghostly entity that interacts with Scrooge, claiming to have more than eighteen hundred brothers and capable of transporting Scrooge to different locations})
+{record_delimiter}
+("entity"{tuple_delimiter}SCROOGE{tuple_delimiter}CHARACTER{tuple_delimiter}A character who is visited by the Spirit and is learning lessons from these visits, showing a willingness to change and learn})
+{record_delimiter}
+("entity"{tuple_delimiter}HOLLY{tuple_delimiter}OBJECT{tuple_delimiter}A plant associated with Christmas, mentioned as part of the festive imagery})
+{record_delimiter}
+("entity"{tuple_delimiter}MISTLETOE{tuple_delimiter}OBJECT{tuple_delimiter}Another plant associated with Christmas, part of the festive imagery})
+{record_delimiter}
+("entity"{tuple_delimiter}FOOD ITEMS{tuple_delimiter}OBJECT{tuple_delimiter}Includes turkeys, geese, game, poultry, brawn, meat, pigs, sausages, oysters, pies, puddings, fruit, and punch, representing the abundance of food associated with Christmas})
+{record_delimiter}
+("entity"{tuple_delimiter}CHRISTMAS MORNING{tuple_delimiter}EVENT{tuple_delimiter}The time setting to which the Spirit transports Scrooge, characterized by festive cheer and bustling city streets})
+{record_delimiter}
+("relationship"{tuple_delimiter}SPIRIT{tuple_delimiter}SCROOGE{tuple_delimiter}The Spirit is guiding and teaching Scrooge, showing him various scenes to impart lessons{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}SCROOGE{tuple_delimiter}CHRISTMAS MORNING{tuple_delimiter}Scrooge is transported by the Spirit to witness the city streets on Christmas morning{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}FOOD ITEMS{tuple_delimiter}CHRISTMAS MORNING{tuple_delimiter}The abundance of food items vanishes to reveal the setting of Christmas morning in the city streets{tuple_delimiter}7)
+{completion_delimiter}
+#############################
+
+
+
+-Real Data-
+######################
+text: {input_text}
+######################
+output:
